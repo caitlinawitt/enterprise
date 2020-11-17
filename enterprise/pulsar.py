@@ -69,17 +69,17 @@ class BasePulsar(object):
     """Abstract Base Class for Pulsar objects."""
 
     def _get_pdist(self):
-        dfile = enterprise.__path__[0] + "/datafiles/pulsar_distances.json"
+        dfile = enterprise.__path__[0] + "/datafiles/pulsar_distances_12p5.json"
         with open(dfile, "r") as fl:
             pdict = json.load(fl)
 
         if self.name[0] not in ["J", "B"]:
             if "J" + self.name in pdict:
-                pdist = tuple(pdict.get("J" + self.name))
+                pdist = tuple((pdict.get("J" + self.name))[0:2])
             else:
-                pdist = tuple(pdict.get("B" + self.name, (1.0, 0.2)))
+                pdist = tuple((pdict.get("B" + self.name, (1.0, 0.2)))[0:2])
         else:
-            pdist = tuple(pdict.get(self.name, (1.0, 0.2)))
+            pdist = tuple((pdict.get(self.name, (1.0, 0.2)))[0:2])
 
         if pdist == (1.0, 0.2):
             msg = "WARNING: Could not find pulsar distance for "
